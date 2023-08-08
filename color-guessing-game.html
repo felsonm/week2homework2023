@@ -13,63 +13,45 @@
     <script>
         var COLORS_ARRAY = ['blue', 'cyan', 'gold', 'gray', 'green', 'magenta', 'orange', 'red', 'white', 'yellow'];
 
-// Part 3: Set up variables for the runGame function and determine the correct guess
-// Declare two variables using the let keyword: one named guess and one named correct. Initialize guess to the value of an empty string. Initialize correct to the Boolean value of false.
-// Declare a const variable named targetIndex. For its value, use what you have learned about arrays and generating random numbers using Math.random() and Math.floor() to generate a random number that is between 0 and the last index number of the COLORS_ARRAY array. 
-// The max number should be calculated dynamically rather than hard coded. Recall what you have learned about checking the length of the array, and that due to zero-indexing, the index of the last number of the array is always one less than its length. 
-// For example: If your array has 10 colors in it, your program should automatically generate a number between 0 and 9. If you were to add 1 more color to the array, your program should automatically generate a number between 0 and 10. 
-// Declare a const named target and assign to it the value of the COLORS_ARRAY item that has the array index of targetIndex. So for example, if the random number stored in targetIndex is 3, the color name in COLORS_ARRAY with the index of 3 should now be stored in target. (In the example array given above, that value would be 'gray'.)
-// TIP: This is not necessary for the game logic, but to make it easier for you as a developer to test the game, we suggest that you add a console.log at this point to log the target to the console. 
-       
         function runGame() {
-            let guess = 'I am thinking of one of these colors:\n\n' + COLORS_ARRAY +
-                '\n\nWhat color am I thinking of?\n';
-            let correct = false;
             const targetIndex = Math.floor(Math.random() * COLORS_ARRAY.length);
             const target = COLORS_ARRAY[targetIndex];
-            console.log(target)
+            let guess = " ";
+            let correct = false;
+            numTries = 0;
+            console.log(target);
 
-// Part 4: Prompt for a guess until correct guess is made
+            do {
+                numTries += 1;
 
-//Write a do ... while loop. The condition to exit the loop should be: !correct (this is the same as saying (correct === false))
-//Inside the loop block, assign the value of the guess variable to the return value of calling prompt(), using the following string as the text for the prompt:
-//'I am thinking of one of these colors:\n\n' + COLORS_ARRAY +
-//'\n\nWhat color am I thinking of?\n'
-// The \n characters will cause a newline in the text. 
-// Below this and still inside the loop block, set up an if statement. The if condition should check if guess === null. If the player hits "Cancel" on the prompt, this is the value that will be assigned to guess. If so, display an appropriate message to the user and use a return statement with no return value. This will exit the entire runGame function and end the game.
-// Below this, still inside the loop block, assign the value of the variable correct to the return value from calling the function checkGuess. Pass two arguments to the checkGuess function: guess and target. 
-// After the program has exited the loop - below it, but still inside the runGame function, set up an alert that gives the user a congratulations message.
+                let message = 'I am thinking of one of these colors:\n\n' + COLORS_ARRAY.join(", ") +
+                    '\n\nWhat color am I thinking of?\n';
+                let guess = prompt(message);
+                let correct = checkGuess(guess, target);
 
-            do
-                prompt(guess)
-            while (correct === false);
-            
-            if (guess === null) {
-                alert("I am sorry to see you go!");
-                return;
-            }
+                if (guess === null) {
+                    alert("I am sorry to see you go!");
+                }
+                if (correct === true) {
+                    alert("Congratulations! You guessed the correct color in " + numTries + " tries!");
+                    document.body.style.background = guess;
+                }
+            } while (guess === null && correct === false);
 
-            correct = checkGuess(guess, targetColor);
-
-        } while (!correct);
-
-        alert("Congratulations! You guessed the correct color!");
-
-        runGame();
-
-// Part 5: Write the content for the checkGuess function
-
-// Inside the checkGuess function, declare a let variable named correct and initialize it to false.
-// Set up an if statement. For its condition, use an array method to check if guess is a color in COLORS_ARRAY at all. At this point you are not checking if the guess is correct, only if it is in the array. If it is not, show the user an appropriate message.
-// Set up an else if block that checks if the guess is higher than the target. If so, then show the user an appropriate message.
-// Set up a second else if block that checks if the guess is lower than the target. If so, then show the user an appropriate message.
-// Set up an else block. By this point, the guess should be correct. So set the value of correct to true.
-// After the ending curly brace of the else block, but still inside the checkGuess function, return correct. By that point, that variable should only contain the value true if the guess was correct, and false if not. 
-// Note: It is possible to set up the if statement in a different way than outlined above, and still have it work in the same way. The above steps are a guideline - if you can set it up a different way and your code still works in the same way, that's OK.
+        }
 
         function checkGuess(guess, target) {
             let correct = false;
-
+            if (guess.includes(target) === correct) {
+                alert("Hmm try again!")
+            } else if (guess > target) {
+                alert("Not quite. Keep trying!")
+            } else if (guess < target) {
+                alert("Oh Boy! Try one more time.")
+            } else {
+                correct = true
+            }
+            return correct;
         }
 
     </script>
